@@ -3,38 +3,22 @@ import Navbar from '../template/Navbar'
 import { Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/fundolongo1.png';
 const Home = () => {
-    const [userData, setUserData] = useState(null);
-    const [roleUser, setRoleUSer] = useState('');
+    const [userData, setUserData] = useState(localStorage.getItem('userData'));
     const location = useLocation();
+
+    const handleLogout = () => {
+        localStorage.clear(); // Limpa todo o localStorage
+        window.location.href = '/login'; // Redireciona para a página de login
+    };
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData')
+
+        console.log('storedData:  ', storedData)
         if (storedData) {
             setUserData(JSON.parse(storedData))
         }
 
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-        }
-
-        fetch('http://localhost:4001/getUser.php', options)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Credenciais inválidas')
-                }
-                return response.json()
-            })
-            .then(data => {
-
-                setRoleUSer(data.tipo_usuario)
-
-            })
-            .catch(err => {
-                console.log(err)
-                alert(err.message)  // Exibe o erro
-            })
     }, [])
 
     return (
@@ -67,16 +51,12 @@ const Home = () => {
                                 >
                                     <div className="d-none d-xl-block ps-2">
                                         <div>{userData?.nome}</div>
-                                        <div className="mt-1 small text-secondary">UI Designer</div>
+                                        <div className="mt-1 small text-secondary">{userData?.tipo_usuario}</div>
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <a href="#" className="dropdown-item">
-                                        Configuração
-                                    </a>
-                                    <a href="#" className="dropdown-item">
-                                        Logout
-                                    </a>
+                                    <a href="#" className="dropdown-item"> Perfil </a>
+                                    <a href="#" className="dropdown-item" onClick={handleLogout}> Logout </a>
                                 </div>
                             </div>
                         </div>
@@ -85,14 +65,16 @@ const Home = () => {
                 {/* Main Content Area - Estrutura em 3 colunas */}
                 <div className="row g-3">
                     {/* Sidebar - Mantendo sua navegação existente */}
-                    <Navbar role={roleUser} />
+                    {/* Sidebar - Mantendo sua navegação existente */}
+                    {userData && <Navbar role={userData.tipo_usuario} />}
+
 
                     {/* Main Content */}
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
-                            {location.pathname === "/home" ?   <h1 className="text-muted mt-1 mb-4">Bem-vindo, {userData?.nome}</h1>  : ""}
-                             
+                                {location.pathname === "/home" ? <h1 className="text-muted mt-1 mb-4">Bem-vindo, {userData?.nome}</h1> : ""}
+
 
                                 {/* Aqui você pode adicionar o conteúdo principal */}
                                 <div className="content-area">

@@ -30,7 +30,7 @@ const Navbar = ({ role }) => {
             )}
 
 
-            {role == '2' && (
+            {role == 'PALESTRANTE' && (
 
 
 
@@ -51,7 +51,7 @@ const Navbar = ({ role }) => {
 
             )}
 
-            {role == '3' && (
+            {role == 'PARTICIPANTE' && (
 
                 <div className="col-md-2 border-end">
                     <div className="list-group">

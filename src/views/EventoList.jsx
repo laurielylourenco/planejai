@@ -1,4 +1,5 @@
 import { Calendar, MapPin, Clock, Pencil, Eye, Trash2 } from "lucide-react"
+import { Link } from 'react-router-dom';
 
 const EventList = ({ listaEvento, onEdit }) => {
     console.log("listaEvento", listaEvento)
@@ -33,11 +34,11 @@ const EventList = ({ listaEvento, onEdit }) => {
                         </div>
                         <div className="card-footer">
                             <div className="btn-list justify-content-center">
+                                <Link to={`/home/evento/${event.id}`} className="btn btn-icon btn-secondary" title="Visualizar">
+                                    <Eye size={16} />
+                                </Link>
                                 <button className="btn btn-icon btn-primary" onClick={() => onEdit(event)} title="Editar">
                                     <Pencil size={16} />
-                                </button>
-                                <button className="btn btn-icon btn-secondary" title="Visualizar">
-                                    <Eye size={16} />
                                 </button>
                                 <button className="btn btn-icon btn-danger" title="Excluir">
                                     <Trash2 size={16} />

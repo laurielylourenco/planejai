@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import EventList from "./EventoList"
 import * as bootstrap from "bootstrap"
