@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import logo from '../assets/fundolongo1.png';
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
@@ -75,7 +76,7 @@ const SignUp = () => {
                 <div className="container container-tight my-5 px-lg-5">
                     <div className="text-center mb-4">
                         <a href="#" className="navbar-brand navbar-brand-autodark">
-                            <img src="fundolongo1.png" alt="Planeja aí" style={{ height: '' }} />
+                            <img src={logo} alt="Planeja aí" style={{ height: '' }} />
                         </a>
                     </div>
                     <h2 className="h3 text-center mb-3">

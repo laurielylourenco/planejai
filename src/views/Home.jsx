@@ -1,15 +1,40 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../template/Navbar'
-import { Outlet } from 'react-router-dom'
-
+import { Outlet, useLocation } from 'react-router-dom'
+import logo from '../assets/fundolongo1.png';
 const Home = () => {
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState(null);
+    const [roleUser, setRoleUSer] = useState('');
+    const location = useLocation();
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData')
         if (storedData) {
             setUserData(JSON.parse(storedData))
         }
+
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        }
+
+        fetch('http://localhost:4001/getUser.php', options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Credenciais inválidas')
+                }
+                return response.json()
+            })
+            .then(data => {
+
+                setRoleUSer(data.tipo_usuario)
+
+            })
+            .catch(err => {
+                console.log(err)
+                alert(err.message)  // Exibe o erro
+            })
     }, [])
 
     return (
@@ -28,7 +53,7 @@ const Home = () => {
 
                         <div className="navbar-brand pe-0 pe-md-3">
                             <a href="#">
-                                <img src="fundolongo1.png" alt="Planeja aí" style={{ height: "3vh" }} />
+                                <img src={logo} alt="Planeja aí" style={{ height: "3vh" }} />
                             </a>
                         </div>
 
@@ -46,10 +71,10 @@ const Home = () => {
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <a href="./settings.html" className="dropdown-item">
+                                    <a href="#" className="dropdown-item">
                                         Configuração
                                     </a>
-                                    <a href="./sign-in.html" className="dropdown-item">
+                                    <a href="#" className="dropdown-item">
                                         Logout
                                     </a>
                                 </div>
@@ -60,13 +85,14 @@ const Home = () => {
                 {/* Main Content Area - Estrutura em 3 colunas */}
                 <div className="row g-3">
                     {/* Sidebar - Mantendo sua navegação existente */}
-                    <Navbar role={'1'} />
+                    <Navbar role={roleUser} />
 
                     {/* Main Content */}
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
-                                <h1 className="card-title mb-4">Bem-vindo, {userData?.nome}</h1>
+                            {location.pathname === "/home" ?   <h1 className="text-muted mt-1 mb-4">Bem-vindo, {userData?.nome}</h1>  : ""}
+                             
 
                                 {/* Aqui você pode adicionar o conteúdo principal */}
                                 <div className="content-area">

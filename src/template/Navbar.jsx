@@ -8,7 +8,7 @@ const Navbar = ({ role }) => {
 
         <>
 
-            {role == '1' && (
+            {role == 'ORGANIZADOR' && (
                 <div className="col-md-2 border-end">
                     <div className="list-group">
                         <Link to="/home" className={`list-group-item list-group-item-action ${location.pathname === '/home' ? 'active' : ''}`}>

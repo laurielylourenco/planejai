@@ -1,79 +1,276 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import EventList from "./EventoList"
+import * as bootstrap from "bootstrap"
+
 const Evento = () => {
-    return (
+  const [listaEvento, setListaEvento] = useState([])
+  const [editingEvent, setEditingEvent] = useState(null)
 
-        <div className="row">
+  const [formData, setFormData] = useState({
+    nome: "",
+    local: "",
+    dataInicio: "",
+    horaInicio: "",
+    dataFim: "",
+    horaFim: "",
+    maxAtividades: "",
+    descricao: "",
+  })
 
-            <div className="col-10">
+  useEffect(() => {
+    fetchEventos()
+  }, [])
 
-                <h1>Evento</h1>
-                <p>Gerencie seus eventos</p>
-            </div>
-            <div className="col-2">
+  const fetchEventos = () => {
+    const options = { method: "GET", headers: { "Content-Type": "application/json" } }
 
+    fetch("http://localhost:4001/getEventos.php", options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar eventos")
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log("data: ", data)
+        setListaEvento(data)
+      })
+      .catch((err) => console.error(err))
+  }
 
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="d-flex">
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
 
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-team">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            Novo evento
-                        </a>
-                    </div>
-                </div>
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(":")
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`
+  }
 
-                <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
+  const handleSubmit = () => {
+    const formattedData = {
+      ...formData,
+      horaInicio: formatTime(formData.horaInicio),
+      horaFim: formatTime(formData.horaFim),
+    }
 
-                            <div class="modal-body">
+    const url = editingEvent
+      ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
+      : "http://localhost:4001/createEvent.php"
 
-                                <div class="mb-3">
-                                    <form>
+    const options = {
+      method: editingEvent ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formattedData),
+    }
 
-                                        <div>
-                                            <label className="form-label">Nome do evento</label>
-                                            <input type="text" className="form-control" name="example-text-input" placeholder="Input placeholder" />
-                                        </div>
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao salvar evento")
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        fetchEventos() // Atualiza a lista de eventos
+        resetForm()
+      })
+      .catch((err) => {
+        console.log(err)
+        alert(err.message)
+      })
+  }
 
-                                        <div>
-                                            <label className="form-label">Local do evento</label>
-                                            <input type="text" className="form-control" name="example-text-input" placeholder="Input placeholder" />
-                                        </div>
+  const handleEdit = (event) => {
+    setEditingEvent(event)
+    setFormData({
+      nome: event.nome,
+      local: event.local,
+      dataInicio: event.dataInicio,
+      horaInicio: event.horaInicio,
+      dataFim: event.dataFim,
+      horaFim: event.horaFim,
+      maxAtividades: event.maxAtividades || "",
+      descricao: event.descricao || "",
+    })
+    const modal = new bootstrap.Modal(document.getElementById("modal-team"))
+    modal.show()
+  }
 
-                                        <div className="mb-3">
-                                            <label className="form-label">Data inicio </label>
-                                            <input type="text" name="input-mask" className="form-control" data-mask="00/00/0000" data-mask-visible="true" placeholder="00/00/0000" autocomplete="off" />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">Hora inicio</label>
-                                            <input type="text" name="input-mask" className="form-control" data-mask="00:00:00" data-mask-visible="true" placeholder="00:00:00" autocomplete="off" />
-                                        </div>
+  const resetForm = () => {
+    setFormData({
+      nome: "",
+      local: "",
+      dataInicio: "",
+      horaInicio: "",
+      dataFim: "",
+      horaFim: "",
+      maxAtividades: "",
+      descricao: "",
+    })
+    setEditingEvent(null)
+  }
 
-
-                                        <div className="mb-3">
-                                            <label className="form-label">Data fim </label>
-                                            <input type="text" name="input-mask" className="form-control" data-mask="00/00/0000" data-mask-visible="true" placeholder="00/00/0000" autocomplete="off" />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">Hora fim</label>
-                                            <input type="text" name="input-mask" className="form-control" data-mask="00:00:00" data-mask-visible="true" placeholder="00:00:00" autocomplete="off" />
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Criar evento</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+  return (
+    <div className="container-xl">
+      <div className="row g-2 align-items-center">
+        <div className="col">
+          <h2 className="page-title">Eventos</h2>
+          <div className="text-muted mt-1">Gerencie seus eventos</div>
         </div>
+        <div className="col-auto ms-auto d-print-none">
+          <div className="d-flex">
+            <a href="#" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-team">
+              <i className="bi bi-plus-lg"></i> Novo evento
+            </a>
+          </div>
+        </div>
+      </div>
 
-    )
+      <div className="modal fade" id="modal-team" tabIndex={-1} role="dialog" aria-hidden={true}>
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">{editingEvent ? "Editar Evento" : "Novo Evento"}</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={resetForm}
+              ></button>
+            </div>
+            <div className="modal-body">
+
+              <div className="mb-3">
+                <label className="form-label">Nome do evento</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nome"
+                  value={formData.nome}
+                  onChange={handleInputChange}
+                  placeholder="Nome do evento"
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Local do evento</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="local"
+                  value={formData.local}
+                  onChange={handleInputChange}
+                  placeholder="Local do evento"
+                />
+              </div>
+              <div className="row">
+                <div className="col-6">
+
+                  <div className="mb-3">
+                    <label className="form-label">Data início</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      name="dataInicio"
+                      value={formData.dataInicio}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                </div>
+
+                <div className="col-6">
+                  <div className="mb-3">
+                    <label className="form-label">Hora início</label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      name="horaInicio"
+                      value={formData.horaInicio}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              <div className="row">
+
+                <div className="col-6">
+                  <div className="mb-3">
+                    <label className="form-label">Data fim</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      name="dataFim"
+                      value={formData.dataFim}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-6">
+
+                  <div className="mb-3">
+                    <label className="form-label">Hora fim</label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      name="horaFim"
+                      value={formData.horaFim}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+              <div className="mb-3">
+                <label className="form-label">Quantidade máxima de atividades simultâneas</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="maxAtividades"
+                  value={formData.maxAtividades}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Descrição</label>
+                <textarea
+                  className="form-control"
+                  name="descricao"
+                  rows="3"
+                  placeholder="Descrição do evento"
+                  value={formData.descricao}
+                  onChange={handleInputChange}
+                ></textarea>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-link link-secondary" data-bs-dismiss="modal" onClick={resetForm}>
+                Cancelar
+              </button>
+              <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit} data-bs-dismiss="modal">
+                {editingEvent ? "Atualizar evento" : "Criar evento"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
+        <EventList listaEvento={listaEvento} onEdit={handleEdit} />
+      </div>
+    </div>
+  )
 }
 
-export default Evento;
+export default Evento
