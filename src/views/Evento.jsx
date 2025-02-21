@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react"
 import EventList from "./EventoList"
-import * as bootstrap from "bootstrap"
-
 const Evento = () => {
   const [listaEvento, setListaEvento] = useState([])
   const [editingEvent, setEditingEvent] = useState(null)
