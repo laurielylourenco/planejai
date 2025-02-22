@@ -134,7 +134,7 @@ const SignUp = () => {
                 </div>
             </div>
             <div className="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-                <div className="bg-cover h-100 min-vh-100" style={{ backgroundImage: 'url(/img/eventos.jpg)' }} ></div>
+                <div className="bg-cover h-100 min-vh-100" style={{ backgroundImage: 'url(/img/imagem_signup2.jpg)' }} ></div>
             </div>
         </div>
     )

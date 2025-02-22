@@ -75,7 +75,7 @@ const Evento = () => {
         if (!response.ok) {
           throw new Error("Erro ao salvar evento")
         }
-        return response.json()
+        return response.text()
       })
       .then((data) => {
         console.log(data)

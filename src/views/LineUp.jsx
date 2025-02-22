@@ -186,7 +186,7 @@ const LineUp = () => {
                       <div className="d-flex justify-content-between">
                         <h5 className="mb-1">
                           <Clock className="icon me-2" size={16} />
-                          {formatarHora(atividade.data)} - {atividade.minutos_duracao} min
+                          {formatarHora(atividade.data)} - {atividade.duracao} min
                         </h5>
                         <small className="text-primary">{atividade.tipo_atividade}</small>
                       </div>
@@ -194,7 +194,7 @@ const LineUp = () => {
                       <p className="mb-1 text-muted">{atividade.descricao}</p>
                       <div className="d-flex align-items-center gap-2 mt-2">
                         <Users size={16} className="text-muted" />
-                        <small className="text-muted">Capacidade: {atividade.max_capacidade} pessoas</small>
+                        <small className="text-muted">Capacidade: {atividade.capacidadeMaxima} pessoas</small>
                       </div>
                     </div>
                     <div className="ms-3">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
-import { useParams } from "react-router-dom"
-import { ChevronLeft, ChevronRight, Clock, Users, AlarmClock, Plus, EllipsisVertical } from "lucide-react"
+import { Link, useParams } from "react-router-dom"
+
+import { ChevronLeft, ChevronRight, Clock, Users, AlarmClock, Plus, EllipsisVertical, Undo2 } from "lucide-react"
 import CriarAtividade from "./CriarAtividade"
 
 const DetalheEvento = () => {
@@ -15,8 +16,10 @@ const DetalheEvento = () => {
 
   const fetchAtividades = useCallback(async () => {
     try {
-      const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
-      const atividadesData = await atividadesResponse.json()
+     // const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
+      
+     const atividadesResponse = await fetch(`http://localhost:8080/atividades`) // esta pegando o todas atividade independete de eventos apenas para teste
+     const atividadesData = await atividadesResponse.json()
       console.log("Atividades atualizadas:", atividadesData)
       setAtividades(atividadesData || [])
     } catch (error) {
@@ -33,21 +36,19 @@ const DetalheEvento = () => {
     return new Date(ano, mes - 1, dia)
   }, [])
 
-  /* 
-  /evento/
-  */
-
   useEffect(() => {
     const fetchEventoEAtividades = async () => {
       try {
-       // const eventoResponse = await fetch(`http://localhost:4001/getEvento.php?id=${id}`)
+        // const eventoResponse = await fetch(`http://localhost:4001/getEvento.php?id=${id}`)
         const eventoResponse = await fetch(`http://localhost:8080/evento/${id}`)
         const eventoData = await eventoResponse.json()
         setEvento(eventoData)
 
-       // const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
-        const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
+        // const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+        const atividadesResponse = await fetch(`http://localhost:8080/atividades`)
         const atividadesData = await atividadesResponse.json()
+
+        console.log('atividadesData:  ',atividadesData)
         setAtividades(atividadesData || [])
 
         if (eventoData.dataInicio && eventoData.dataFim) {
@@ -148,8 +149,8 @@ const DetalheEvento = () => {
     return atividades.filter((atividade) => {
       if (!atividade || !atividade.data) return false
       try {
-        const dataAtividade = atividade.data.split(" ")[0]
-        return dataAtividade === data
+        //const dataAtividade = atividade.data.split(" ")[0]
+        return atividade.data === data
       } catch (error) {
         console.error("Erro ao processar atividade:", atividade)
         return false
@@ -165,7 +166,11 @@ const DetalheEvento = () => {
     <div className="container-fluid p-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex align-items-center gap-2">
+          <Link to="/home/evento" >
+            <Undo2 />
+          </Link>
           <h2 className="mb-0">{evento.nome}</h2>
+
           <span className="text-muted">
             ({formatarData(evento.dataInicio)} - {formatarData(evento.dataFim)})
           </span>
@@ -206,7 +211,7 @@ const DetalheEvento = () => {
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <div className="d-flex align-items-center gap-2">
                             <Clock size={16} className="text-primary" />
-                            <small className="text-primary">{formatarHora(atividade.data)}</small>
+                            <small className="text-primary">{(atividade.data)}</small>
                           </div>
                           <div className="card-actions">
                             <div className="dropdown">
@@ -243,11 +248,11 @@ const DetalheEvento = () => {
                         <div className="d-flex justify-content-between align-items-center mt-2">
                           <div className="d-flex align-items-center gap-2">
                             <Users size={16} className="text-muted" />
-                            <small className="text-muted">{atividade.max_capacidade} pessoas</small>
+                            <small className="text-muted">{atividade.capacidadeMaxima} pessoas</small>
                           </div>
                           <div className="d-flex align-items-center gap-2">
                             <AlarmClock size={16} className="text-muted" />
-                            <small className="text-muted">{atividade.minutos_duracao} minutos</small>
+                            <small className="text-muted">{atividade.duracao} minutos</small>
                           </div>
                         </div>
                       </div>

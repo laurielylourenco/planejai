@@ -11,6 +11,8 @@ import Palestrante from '../views/Palestrante'
 import EventoPalestrante from '../views/EventoPalestrante'
 import DetalheEvento from '../views/DetalheEvento'
 import EventoListPartipante from '../views/EventListParticipante'
+import PrivateRoute from './PrivateRoute' // Importe o componente PrivateRoute
+import Perfil from '../views/Perfil'
 
 const Routing = () => {
   return (
@@ -18,7 +20,7 @@ const Routing = () => {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/home" element={<Home />}>
+      <Route path="/home" element={<PrivateRoute element={<Home />} />}>
         <Route index element={<Inicio />} />
         <Route path="inscricao" element={<Inscricao />} />
         <Route path="line-up/:id" element={<LineUp />} />
@@ -31,6 +33,7 @@ const Routing = () => {
         <Route path="in-event" element={<EventoPalestrante />} />
 
         <Route path="palestrantes" element={<Palestrante />} />
+        <Route path="perfil" element={<Perfil />} />
       </Route>
     </Routes>
   )

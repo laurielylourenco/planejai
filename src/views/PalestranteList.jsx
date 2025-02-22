@@ -1,10 +1,10 @@
 import { Mail } from "lucide-react"
 import { Link } from 'react-router-dom';
 
-const ParticipanteList = ({ listaParticipante, onEdit }) => {
-    console.log("listaParticipante", listaParticipante)
+const PalestranteList = ({ listaPalestrante, onEdit }) => {
+    console.log("listaParticipante", listaPalestrante)
 
-    if (listaParticipante.length === 0) {
+    if (listaPalestrante.length === 0) {
         return (
             <div className="alert alert-info" role="alert">
                 Nenhum palestrante cadastrado.
@@ -14,7 +14,7 @@ const ParticipanteList = ({ listaParticipante, onEdit }) => {
 
     return (
         <div className="row row-cards">
-            {listaParticipante.map((event) => (
+            {listaPalestrante.map((event) => (
                 <div key={event.id} className="col-md-6 col-lg-4">
                     <div className="card">
                         <div className="card-body">
@@ -25,11 +25,6 @@ const ParticipanteList = ({ listaParticipante, onEdit }) => {
                                 <span className="text-muted">{event.email}</span>
                             </div>
                         </div>
-                        <div className="card-footer">
-                            <div className="btn-list justify-content-center">
-
-                            </div>
-                        </div>
                     </div>
                 </div>
             ))}
@@ -37,4 +32,4 @@ const ParticipanteList = ({ listaParticipante, onEdit }) => {
     )
 }
 
-export default ParticipanteList
+export default PalestranteList

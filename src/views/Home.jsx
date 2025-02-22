@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../template/Navbar'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, Link } from 'react-router-dom'
 import logo from '../assets/fundolongo1.png';
 const Home = () => {
     const [userData, setUserData] = useState(localStorage.getItem('userData'));
@@ -55,7 +55,11 @@ const Home = () => {
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <a href="#" className="dropdown-item"> Perfil </a>
+                                    <Link to={"/home/perfil"} className='dropdown-item'>
+                                        Perfil
+                                    </Link>
+
+
                                     <a href="#" className="dropdown-item" onClick={handleLogout}> Logout </a>
                                 </div>
                             </div>

@@ -4,8 +4,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
   const [formData, setFormData] = useState({
     nome: "",
     descricao: "",
-    max_capacidade: "",
-    minutos_duracao: "",
+    capacidadeMaxima: "",
+    duracao: "",
     tipo_atividade: "",
     hora: "",
   })
@@ -16,8 +16,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
       setFormData({
         nome: atividadeParaEditar.nome,
         descricao: atividadeParaEditar.descricao,
-        max_capacidade: atividadeParaEditar.max_capacidade,
-        minutos_duracao: atividadeParaEditar.minutos_duracao,
+        capacidadeMaxima: atividadeParaEditar.capacidadeMaxima,
+        duracao: atividadeParaEditar.duracao,
         tipo_atividade: atividadeParaEditar.tipo_atividade,
         hora: hora.substring(0, 5),
       })
@@ -34,16 +34,14 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
 
   const handleSubmit = async () => {
     try {
-      const dataCompleta = `${data} ${formData.hora}:00`
+      const dataCompleta = `${data}T${formData.hora}:00`
+      let res = formData
       const dadosParaEnviar = {
         ...formData,
         data: dataCompleta,
-        id_evento: eventoId,
+        eventoId: eventoId,
       }
 
- /*       const url = atividadeParaEditar
-         ? `http://localhost:4001/updateAtividade.php?id=${atividadeParaEditar.id}`
-         : "http://localhost:4001/createAtividade.php" */
 
       const url = atividadeParaEditar
         ? `http://localhost:4001/updateAtividade.php?id=${atividadeParaEditar.id}`
@@ -64,23 +62,23 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
         throw new Error(atividadeParaEditar ? "Erro ao atualizar atividade" : "Erro ao criar atividade")
       }
 
-      const responseData = await response.json()
+     // const responseData = await response.json()
 
       // Limpar o formulário
       setFormData({
         nome: "",
         descricao: "",
-        max_capacidade: "",
-        minutos_duracao: "",
+        capacidadeMaxima: "",
+        duracao: "",
         tipo_atividade: "",
         hora: "",
       })
 
       // Chamar o callback apropriado
       if (atividadeParaEditar) {
-        onAtividadeAtualizada?.(responseData)
+        onAtividadeAtualizada?.(dadosParaEnviar)
       } else {
-        onAtividadeCriada?.(responseData)
+        onAtividadeCriada?.(dadosParaEnviar)
       }
     } catch (error) {
       console.error("Erro:", error)
@@ -138,8 +136,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
                   <input
                     type="number"
                     className="form-control"
-                    name="minutos_duracao"
-                    value={formData.minutos_duracao}
+                    name="duracao"
+                    value={formData.duracao}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -153,8 +151,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
                   <input
                     type="number"
                     className="form-control"
-                    name="max_capacidade"
-                    value={formData.max_capacidade}
+                    name="capacidadeMaxima"
+                    value={formData.capacidadeMaxima}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -169,10 +167,10 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
                     onChange={handleInputChange}
                   >
                     <option value="">Selecione...</option>
-                    <option value="Palestra">Palestra</option>
-                    <option value="Workshop">Workshop</option>
-                    <option value="Mesa Redonda">Mesa Redonda</option>
-                    <option value="Curso">Curso</option>
+                    <option value="PALESTRA">Palestra</option>
+                    {/*        <option value="Workshop">Workshop</option>
+                    <option value="Mesa Redonda">Mesa Redonda</option> */}
+                    <option value="MINICURSO">Curso</option>
                   </select>
                 </div>
               </div>

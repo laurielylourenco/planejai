@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import EventList from "./EventoList"
 import * as bootstrap from "bootstrap"
-import ParticipanteList from "./ParticipanteList"
+import PalestranteList from "./PalestranteList"
 
 const Palestrante = () => {
-    const [listaParticipante, setListaPalestrante] = useState([])
+    const [listaPalestrante, setListaPalestrante] = useState([])
     const [editingEvent, setEditingEvent] = useState(null)
 
     const [formData, setFormData] = useState({
@@ -103,7 +103,7 @@ const Palestrante = () => {
             <div className="row g-2 align-items-center">
                 <div className="col">
                     <h2 className="page-title">Palestrante</h2>
-                    <div className="text-muted mt-1">Gerencie seus eventos</div>
+                    <div className="text-muted mt-1">Aqui estão seus palestrante cadastrados</div>
                 </div>
                 <div className="col-auto ms-auto d-print-none">
                     <div className="d-flex">
@@ -183,7 +183,7 @@ const Palestrante = () => {
 
             <div className="row">
              
-             <ParticipanteList listaParticipante={listaParticipante} onEdit={handleEdit}/>
+             <PalestranteList listaPalestrante={listaPalestrante} onEdit={handleEdit}/>
             </div>
         </div>
     )
