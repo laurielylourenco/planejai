@@ -21,8 +21,8 @@ const Evento = () => {
 
   const fetchEventos = () => {
     const options = { method: "GET", headers: { "Content-Type": "application/json" } }
-
-    fetch("http://localhost:4001/getEventos.php", options)
+  ///*   fetch("http://localhost:4001/getEventos.php", options) */
+    fetch("http://localhost:8080/eventos", options)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Erro ao buscar eventos")
@@ -56,9 +56,13 @@ const Evento = () => {
       horaFim: formatTime(formData.horaFim),
     }
 
+    /*  const url = editingEvent
+       ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
+       : "http://localhost:4001/createEvent.php" */
+
     const url = editingEvent
       ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
-      : "http://localhost:4001/createEvent.php"
+      : "http://localhost:8080/evento"
 
     const options = {
       method: editingEvent ? "PUT" : "POST",

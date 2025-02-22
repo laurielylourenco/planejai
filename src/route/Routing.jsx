@@ -10,6 +10,7 @@ import Evento from '../views/Evento'
 import Palestrante from '../views/Palestrante'
 import EventoPalestrante from '../views/EventoPalestrante'
 import DetalheEvento from '../views/DetalheEvento'
+import EventoListPartipante from '../views/EventListParticipante'
 
 const Routing = () => {
   return (
@@ -20,13 +21,15 @@ const Routing = () => {
       <Route path="/home" element={<Home />}>
         <Route index element={<Inicio />} />
         <Route path="inscricao" element={<Inscricao />} />
-        <Route path="line-up" element={<LineUp />} />
+        <Route path="line-up/:id" element={<LineUp />} />
+        <Route path="lista-evento" element={<EventoListPartipante />} />
         <Route path="participantes" element={<Participante />} />
         
         <Route path="evento" element={<Evento />} />
         <Route path="evento/:id" element={<DetalheEvento />} />
 
         <Route path="in-event" element={<EventoPalestrante />} />
+
         <Route path="palestrantes" element={<Palestrante />} />
       </Route>
     </Routes>

@@ -41,10 +41,15 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
         id_evento: eventoId,
       }
 
+ /*       const url = atividadeParaEditar
+         ? `http://localhost:4001/updateAtividade.php?id=${atividadeParaEditar.id}`
+         : "http://localhost:4001/createAtividade.php" */
+
       const url = atividadeParaEditar
         ? `http://localhost:4001/updateAtividade.php?id=${atividadeParaEditar.id}`
-        : "http://localhost:4001/createAtividade.php"
+        : "http://localhost:8080/atividade"
 
+      //
       const method = atividadeParaEditar ? "PUT" : "POST"
 
       const response = await fetch(url, {

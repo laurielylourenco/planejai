@@ -61,7 +61,7 @@ const Navbar = ({ role }) => {
                         <Link to="/home/inscricao" className={`list-group-item list-group-item-action ${location.pathname === '/home/inscricao' ? 'active' : ''}`}>
                             Inscrição
                         </Link>
-                        <Link to="/home/line-up" className={`list-group-item list-group-item-action ${location.pathname === '/home/line-up' ? 'active' : ''}`}>
+                        <Link to="/home/lista-evento" className={`list-group-item list-group-item-action ${location.pathname === '/home/lista-evento' ? 'active' : ''}`}>
                             Programação
                         </Link>
 

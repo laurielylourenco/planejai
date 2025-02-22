@@ -15,7 +15,7 @@ const DetalheEvento = () => {
 
   const fetchAtividades = useCallback(async () => {
     try {
-      const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+      const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
       const atividadesData = await atividadesResponse.json()
       console.log("Atividades atualizadas:", atividadesData)
       setAtividades(atividadesData || [])
@@ -33,14 +33,20 @@ const DetalheEvento = () => {
     return new Date(ano, mes - 1, dia)
   }, [])
 
+  /* 
+  /evento/
+  */
+
   useEffect(() => {
     const fetchEventoEAtividades = async () => {
       try {
-        const eventoResponse = await fetch(`http://localhost:4001/getEvento.php?id=${id}`)
+       // const eventoResponse = await fetch(`http://localhost:4001/getEvento.php?id=${id}`)
+        const eventoResponse = await fetch(`http://localhost:8080/evento/${id}`)
         const eventoData = await eventoResponse.json()
         setEvento(eventoData)
 
-        const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+       // const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+        const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
         const atividadesData = await atividadesResponse.json()
         setAtividades(atividadesData || [])
 
