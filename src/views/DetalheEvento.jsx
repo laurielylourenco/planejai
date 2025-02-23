@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { ChevronLeft, ChevronRight, Clock, Users, AlarmClock, Plus, EllipsisVertical, Undo2, Trash2, Pencil } from "lucide-react"
 import CriarAtividade from "./CriarAtividade"
@@ -12,6 +12,7 @@ const DetalheEvento = () => {
   const [datas, setDatas] = useState([])
   const [dataSelecionada, setDataSelecionada] = useState(null)
   const [atividadeParaEditar, setAtividadeParaEditar] = useState(null)
+  const navigate = useNavigate();
   const colunasPorPagina = 4
 
   const fetchAtividades = useCallback(async () => {
@@ -46,7 +47,7 @@ const DetalheEvento = () => {
 
         const atividadesResponse = await fetch(`http://localhost:8080/atividades`)
         const atividadesData = await atividadesResponse.json()
-    console.log('atividadesData',atividadesData)
+        console.log('atividadesData', atividadesData)
         setAtividades(atividadesData || [])
 
         if (eventoData.dataInicio && eventoData.dataFim) {
@@ -69,6 +70,13 @@ const DetalheEvento = () => {
 
     fetchEventoEAtividades()
   }, [id, ajustarData])
+
+
+
+  const voltar = () => {
+    navigate(-1); // Isso irá voltar à página anterior
+  };
+
 
   const handleNovaAtividade = (data) => {
     setDataSelecionada(data)
@@ -168,9 +176,10 @@ const DetalheEvento = () => {
     <div className="container-fluid p-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex align-items-center gap-2">
-          <Link to="/home/evento" >
+
+          <a href="#" onClick={voltar} className="">
             <Undo2 />
-          </Link>
+          </a>
           <h2 className="mb-0">{evento.nome}</h2>
 
           <span className="text-muted">

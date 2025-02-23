@@ -32,17 +32,13 @@ const EventoListPalestrante = ({ listaEvento }) => {
             <div className="card-body">
 
 
-              <div className="mb-2">
+              <div className="">
                 <MapPin className="icon me-2" size={16} />
                 <span className="text-muted">{event.local}</span>
               </div>
-              <div className="mb-2">
+              <div className="">
                 <Calendar className="icon me-2" size={16} />
-                <span className="text-muted">{event.dataInicio}</span>
-              </div>
-              <div className="mb-2">
-                <Clock className="icon me-2" size={16} />
-                <span className="text-muted">{`${event.horaInicio} - ${event.horaFim}`}</span>
+                <span className="text-muted">{`${event.dataInicio} - ${event.dataFim}`}</span>
               </div>
             </div>
 

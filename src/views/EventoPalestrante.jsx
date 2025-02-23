@@ -13,11 +13,11 @@ const EventoPalestrante = () => {
 
         const fetchEventosPalestrante = async () => {
 
-            const eventoResponse = await fetch(`http://localhost:4001/getEventoPalestrante.php?id_palestrante=6`)
+            const eventoResponse = await fetch(`http://localhost:8080/eventos`)
             const eventoData = await eventoResponse.json()
 
             console.log('eventoData', eventoData)
-            setListaEventoP([eventoData])
+            setListaEventoP(eventoData)
         }
 
         fetchEventosPalestrante()
@@ -33,7 +33,7 @@ const EventoPalestrante = () => {
             <div className="col-12">
 
                 <h1>Evento</h1>
-                <p>Lista de eventos</p>
+                <p>Lista de eventos 1</p>
 
 
                 <EventoListPalestrante listaEvento={listaEventoP} />
