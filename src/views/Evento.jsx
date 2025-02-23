@@ -21,7 +21,6 @@ const Evento = () => {
 
   const fetchEventos = () => {
     const options = { method: "GET", headers: { "Content-Type": "application/json" } }
-  ///*   fetch("http://localhost:4001/getEventos.php", options) */
     fetch("http://localhost:8080/eventos", options)
       .then((response) => {
         if (!response.ok) {

@@ -13,7 +13,8 @@ const LineUp = () => {
 
   const fetchAtividades = useCallback(async () => {
     try {
-      const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+  //    const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
+      const atividadesResponse = await fetch(`http://localhost:8080/atividades`) // tem que ter filtro por evento
       if (!atividadesResponse.ok) {
         throw new Error("Erro ao buscar atividades")
       }

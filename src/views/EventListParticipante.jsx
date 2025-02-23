@@ -12,8 +12,7 @@ const EventoListPartipante = () => {
 
     const fetchEventos = () => {
         const options = { method: "GET", headers: { "Content-Type": "application/json" } }
-        // fetch("http://localhost:8080/eventos", options)
-        fetch("http://localhost:4001/getEventos.php", options)
+        fetch("http://localhost:8080/eventos", options)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Erro ao buscar eventos")

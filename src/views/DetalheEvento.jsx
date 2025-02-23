@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { Link, useParams } from "react-router-dom"
 
-import { ChevronLeft, ChevronRight, Clock, Users, AlarmClock, Plus, EllipsisVertical, Undo2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Clock, Users, AlarmClock, Plus, EllipsisVertical, Undo2, Trash2, Pencil } from "lucide-react"
 import CriarAtividade from "./CriarAtividade"
 
 const DetalheEvento = () => {
@@ -16,10 +16,10 @@ const DetalheEvento = () => {
 
   const fetchAtividades = useCallback(async () => {
     try {
-     // const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
-      
-     const atividadesResponse = await fetch(`http://localhost:8080/atividades`) // esta pegando o todas atividade independete de eventos apenas para teste
-     const atividadesData = await atividadesResponse.json()
+      // const atividadesResponse = await fetch(`http://localhost:8080/atividade/${id}`)
+
+      const atividadesResponse = await fetch(`http://localhost:8080/atividades`) // esta pegando o todas atividade independete de eventos apenas para teste
+      const atividadesData = await atividadesResponse.json()
       console.log("Atividades atualizadas:", atividadesData)
       setAtividades(atividadesData || [])
     } catch (error) {
@@ -39,16 +39,14 @@ const DetalheEvento = () => {
   useEffect(() => {
     const fetchEventoEAtividades = async () => {
       try {
-        // const eventoResponse = await fetch(`http://localhost:4001/getEvento.php?id=${id}`)
+
         const eventoResponse = await fetch(`http://localhost:8080/evento/${id}`)
         const eventoData = await eventoResponse.json()
         setEvento(eventoData)
 
-        // const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
         const atividadesResponse = await fetch(`http://localhost:8080/atividades`)
         const atividadesData = await atividadesResponse.json()
 
-        console.log('atividadesData:  ',atividadesData)
         setAtividades(atividadesData || [])
 
         if (eventoData.dataInicio && eventoData.dataFim) {
@@ -89,7 +87,7 @@ const DetalheEvento = () => {
   const handleDeletarAtividade = async (atividade) => {
     if (window.confirm("Tem certeza que deseja deletar esta atividade?")) {
       try {
-        const response = await fetch(`http://localhost:4001/deleteAtividade.php?id=${atividade.id}`, {
+        const response = await fetch(`http://localhost:8080/atividade/${atividade.id}`, {
           method: "DELETE",
         })
 
@@ -227,16 +225,18 @@ const DetalheEvento = () => {
                                     handleEditarAtividade(atividade)
                                   }}
                                 >
+                                  <Pencil className="icon dropdown-item-icon" size={16} />
                                   Atualizar
                                 </a>
                                 <a
                                   href="#"
-                                  className="dropdown-item"
+                                  className="dropdown-item text-danger"
                                   onClick={(e) => {
                                     e.preventDefault()
                                     handleDeletarAtividade(atividade)
                                   }}
                                 >
+                                   <Trash2 className="icon dropdown-item-icon" size={16} />
                                   Deletar
                                 </a>
                               </div>
