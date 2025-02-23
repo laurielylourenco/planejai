@@ -56,11 +56,11 @@ const Evento = () => {
     }
 
     const url = editingEvent
-      ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
+      ? `http://localhost:8080/evento/${editingEvent.id}`
       : "http://localhost:8080/evento"
 
     const options = {
-      method: editingEvent ? "PUT" : "POST",
+      method: editingEvent ? "PATCH" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formattedData),
     }
