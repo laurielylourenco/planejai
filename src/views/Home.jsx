@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../template/Navbar'
-import { Outlet } from 'react-router-dom'
-
+import { Outlet, useLocation, Link } from 'react-router-dom'
+import logo from '../assets/fundolongo1.png';
 const Home = () => {
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState(localStorage.getItem('userData'));
+    const location = useLocation();
+
+    const handleLogout = () => {
+        localStorage.clear(); // Limpa todo o localStorage
+        window.location.href = '/login'; // Redireciona para a página de login
+    };
 
     useEffect(() => {
         const storedData = localStorage.getItem('userData')
+
+        console.log('storedData:  ', storedData)
         if (storedData) {
             setUserData(JSON.parse(storedData))
         }
+
     }, [])
 
     return (
@@ -28,7 +37,7 @@ const Home = () => {
 
                         <div className="navbar-brand pe-0 pe-md-3">
                             <a href="#">
-                                <img src="fundolongo1.png" alt="Planeja aí" style={{ height: "3vh" }} />
+                                <img src={logo} alt="Planeja aí" style={{ height: "3vh" }} />
                             </a>
                         </div>
 
@@ -42,16 +51,16 @@ const Home = () => {
                                 >
                                     <div className="d-none d-xl-block ps-2">
                                         <div>{userData?.nome}</div>
-                                        <div className="mt-1 small text-secondary">UI Designer</div>
+                                        <div className="mt-1 small text-secondary">{userData?.tipo_usuario}</div>
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <a href="./settings.html" className="dropdown-item">
-                                        Configuração
-                                    </a>
-                                    <a href="./sign-in.html" className="dropdown-item">
-                                        Logout
-                                    </a>
+                                    <Link to={"/home/perfil"} className='dropdown-item'>
+                                        Perfil
+                                    </Link>
+
+
+                                    <a href="#" className="dropdown-item" onClick={handleLogout}> Logout </a>
                                 </div>
                             </div>
                         </div>
@@ -60,14 +69,15 @@ const Home = () => {
                 {/* Main Content Area - Estrutura em 3 colunas */}
                 <div className="row g-3">
                     {/* Sidebar - Mantendo sua navegação existente */}
-                    <Navbar role={'1'} />
+                    {/* Sidebar - Mantendo sua navegação existente */}
+                    {userData && <Navbar role={userData.tipo_usuario} />}
+
 
                     {/* Main Content */}
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
-                                <h1 className="card-title mb-4">Bem-vindo, {userData?.nome}</h1>
-
+                                
                                 {/* Aqui você pode adicionar o conteúdo principal */}
                                 <div className="content-area">
 

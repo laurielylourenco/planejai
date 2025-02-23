@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import logo from '../assets/fundolongo1.png';
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
@@ -30,10 +31,11 @@ const SignUp = () => {
                     url = 'organizador'
                     break;
                 case '2':
-                    url = 'palestrante'
+                    url = 'participante'
+
                     break;
                 case '3':
-                    url = 'participante'
+                    url = 'palestrante'
                     break;
                 default:
                     throw new Error('Url inválida')
@@ -75,7 +77,7 @@ const SignUp = () => {
                 <div className="container container-tight my-5 px-lg-5">
                     <div className="text-center mb-4">
                         <a href="#" className="navbar-brand navbar-brand-autodark">
-                            <img src="fundolongo1.png" alt="Planeja aí" style={{ height: '' }} />
+                            <img src={logo} alt="Planeja aí" style={{ height: '' }} />
                         </a>
                     </div>
                     <h2 className="h3 text-center mb-3">
@@ -133,7 +135,7 @@ const SignUp = () => {
                 </div>
             </div>
             <div className="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-                <div className="bg-cover h-100 min-vh-100" style={{ backgroundImage: 'url(/img/eventos.jpg)' }} ></div>
+                <div className="bg-cover h-100 min-vh-100" style={{ backgroundImage: 'url(/img/imagem_signup2.jpg)' }} ></div>
             </div>
         </div>
     )

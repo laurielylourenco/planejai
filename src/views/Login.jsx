@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import logo from '../assets/fundolongo1.png';
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -9,45 +10,52 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault()
 
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nome: 'Lauri',
-                senha: password,
-                email: email,
+            fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    senha: password,
+                    email: email,
+                })
             })
-        }
-
-        fetch('http://localhost:8080/login', options)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Credenciais inválidas')
-                }
-                return response.text()
-            })
-            .then(data => {
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Credenciais inválidas')
+                    }
+                    return response.text()
+                })
+                .then(data => {
                     //console.log('data:  ',data)
-            
-              ///  if (data && data.token) {
-                    // Armazenar apenas o token JWT
-                    localStorage.setItem('userToken', data.token)
-                    localStorage.setItem('userData', JSON.stringify({
-                        nome: 'lauriely',
-                        senha: password,
-                        email: email
-                    })) // mockr
 
+                    ///  if (data && data.token) {
+                    // Armazenar apenas o token JWT
+
+                    fetch(`http://localhost:8080/usuario?email=${email}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'text/plain' }
+                    })
+                        .then(response => response.json())
+                        .then(response => {
+
+                            localStorage.setItem('userToken', data.token)
+                            localStorage.setItem('userData', JSON.stringify({
+                                email: response.email,
+                                nome: response.nome,
+                                tipo_usuario: response.tipoUsuario,
+                                usuario: response.id
+                            }))
+
+                            navigate('/home')
+                        })
+                        .catch(err => console.error(err));
                     // Redireciona para a home
-                    navigate('/home')
-             /*    } else {
-                    throw new Error('Erro ao obter token')
-                } */
-            })
-            .catch(err => {
-                console.log(err)
-                alert(err.message)  // Exibe o erro
-            })
+               
+
+                })
+                .catch(err => {
+                    console.log(err)
+                   // alert(err.message)  // Exibe o erro
+                })
     }
 
     return (
@@ -56,7 +64,7 @@ const Login = () => {
                 <div className="container container-tight my-5 px-lg-5">
                     <div className="text-center mb-4">
                         <a href="#" className="navbar-brand navbar-brand-autodark">
-                            <img src="fundolongo1.png" alt="Planeja aí" style={{ height: '' }} />
+                            <img src={logo} alt="Planeja aí" style={{ height: '' }} />
                         </a>
                     </div>
                     <h2 className="h3 text-center mb-3">
