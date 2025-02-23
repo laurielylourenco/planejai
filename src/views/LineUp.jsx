@@ -5,7 +5,7 @@ import { Clock, Users } from "lucide-react"
 const LineUp = () => {
   const { id } = useParams()
   const [atividades, setAtividades] = useState([])
-  const [participante, setParticipante] = useState([])
+  const [participante, setParticipante] = useState(JSON.parse(localStorage.getItem("userData")))
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [inscricoes, setInscricoes] = useState([])
@@ -29,7 +29,7 @@ const LineUp = () => {
 
   const fetchInscricoes = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:8080/inscricao/1`) // Assumindo userId fixo para exemplo
+      const response = await fetch(`http://localhost:8080/inscricao/${participante?.usuario}`) // Assumindo userId fixo para exemplo
       if (!response.ok) throw new Error("Erro ao buscar inscrições")
       const data = await response.json()
       setInscricoes(data)
@@ -58,7 +58,7 @@ const LineUp = () => {
         body: JSON.stringify({
           idAtividade: atividadeId,
           atividade_id_evento: id,
-          idParticipante: 1, // Assumindo userId fixo para exemplo
+          idParticipante: participante?.usuario,
         }),
       })
 
@@ -66,18 +66,7 @@ const LineUp = () => {
         throw new Error("Erro ao realizar inscrição")
       }
 
-      // Atualizar estado local
-
-
-
       fetchInscricoes();
-         /* const newInscricao = await response.json()
-      setInscricoes((prev) => [...prev, newInscricao]) */
-     
-     /*  setInscricoes((prev) => ({
-        ...prev,
-        [atividadeId]: true,
-      })) */
 
       alert("Inscrição realizada com sucesso!")
     } catch (error) {
@@ -88,7 +77,7 @@ const LineUp = () => {
 
   const handleCancelarInscricao = async (atividadeId) => {
     try {
-      const response = await fetch(`http://localhost:8080/inscricao/${1}/${atividadeId}`, {
+      const response = await fetch(`http://localhost:8080/inscricao/${participante?.usuario}/${atividadeId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

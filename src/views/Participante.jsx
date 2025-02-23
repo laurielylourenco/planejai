@@ -91,7 +91,7 @@ const Participante = () => {
       <div className="page-header d-print-none mb-4">
         <div className="row align-items-center">
           <div className="col">
-            <h2>Lista de Participantes por Evento</h2>
+            <h2>Lista de Participantes</h2>
           </div>
           <div className="col-auto ms-auto">
             <div className="d-flex">

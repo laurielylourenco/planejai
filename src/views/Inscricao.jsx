@@ -5,11 +5,18 @@ const Inscricao = () => {
   const [inscricoes, setInscricoes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
+  const [participante_ins, setParticipanteIns] = useState(JSON.parse(localStorage.getItem("userData")))
   useEffect(() => {
+
+    const storedData = localStorage.getItem("userData")
+
+    if (storedData) {
+      setParticipanteIns(JSON.parse(storedData))
+    }
+
     const fetchInscricoes = async () => {
       try {
-        const response = await fetch("http://localhost:8080/inscricao/1")
+        const response = await fetch(`http://localhost:8080/inscricao/${participante_ins?.usuario}`)
         if (!response.ok) {
           throw new Error("Erro ao carregar inscrições")
         }
@@ -153,7 +160,7 @@ const Inscricao = () => {
                           <span>Presença Confirmada</span>
                         </div>
                       ) : (
-                        <div className="d-flex align-items-center text-muted">
+                        <div className="d-flex align-items-center text-danger">
                           <XCircle size={16} className="me-1" />
                           <span>Aguardando Confirmação</span>
                         </div>

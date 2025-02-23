@@ -17,7 +17,6 @@ const Perfil = () => {
 
   useEffect(() => {
     const storedData = localStorage.getItem("userData")
-    console.log("storedData: ", storedData)
 
     if (storedData) {
       try {

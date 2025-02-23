@@ -41,7 +41,8 @@ const Login = () => {
                             localStorage.setItem('userData', JSON.stringify({
                                 email: response.email,
                                 nome: response.nome,
-                                tipo_usuario: response.tipoUsuario
+                                tipo_usuario: response.tipoUsuario,
+                                usuario: response.id
                             }))
 
                             navigate('/home')
