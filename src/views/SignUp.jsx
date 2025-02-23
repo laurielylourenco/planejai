@@ -31,10 +31,11 @@ const SignUp = () => {
                     url = 'organizador'
                     break;
                 case '2':
-                    url = 'palestrante'
+                    url = 'participante'
+
                     break;
                 case '3':
-                    url = 'participante'
+                    url = 'palestrante'
                     break;
                 default:
                     throw new Error('Url inválida')
