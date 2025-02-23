@@ -195,7 +195,7 @@ const LineUp = () => {
                       <p className="mb-1 text-muted">{atividade.descricao}</p>
                       <div className="d-flex align-items-center gap-2 mt-2">
                         <Users size={16} className="text-muted" />
-                        <small className="text-muted">Capacidade: {atividade.capacidadeMaxima} pessoas</small>
+                        <small className="text-muted">Capacidade: {atividade.maxCapacidade} pessoas</small>
                       </div>
                     </div>
                     <div className="ms-3">

@@ -46,7 +46,7 @@ const DetalheEvento = () => {
 
         const atividadesResponse = await fetch(`http://localhost:8080/atividades`)
         const atividadesData = await atividadesResponse.json()
-
+    console.log('atividadesData',atividadesData)
         setAtividades(atividadesData || [])
 
         if (eventoData.dataInicio && eventoData.dataFim) {
@@ -127,8 +127,8 @@ const DetalheEvento = () => {
 
   const formatarData = (data) => {
     if (!data) return ""
-    const dataObj = ajustarData(data)
-    return dataObj.toLocaleDateString("pt-BR", {
+    const date = new Date(data)
+    return date.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
       timeZone: "UTC",
@@ -137,8 +137,12 @@ const DetalheEvento = () => {
 
   const formatarHora = (dataHora) => {
     if (!dataHora) return ""
-    const [data, hora] = dataHora.split(" ")
-    return hora.substring(0, 5) // Retorna apenas HH:mm
+    const date = new Date(dataHora)
+    return date.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "UTC",
+    })
   }
 
   const getAtividadesPorData = (data) => {
@@ -147,8 +151,8 @@ const DetalheEvento = () => {
     return atividades.filter((atividade) => {
       if (!atividade || !atividade.data) return false
       try {
-        //const dataAtividade = atividade.data.split(" ")[0]
-        return atividade.data === data
+        const dataAtividade = new Date(atividade.data).toISOString().split("T")[0]
+        return dataAtividade === data
       } catch (error) {
         console.error("Erro ao processar atividade:", atividade)
         return false
@@ -209,7 +213,7 @@ const DetalheEvento = () => {
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <div className="d-flex align-items-center gap-2">
                             <Clock size={16} className="text-primary" />
-                            <small className="text-primary">{(atividade.data)}</small>
+                            <small className="text-primary">{formatarHora(atividade.data)}</small>
                           </div>
                           <div className="card-actions">
                             <div className="dropdown">
@@ -225,18 +229,16 @@ const DetalheEvento = () => {
                                     handleEditarAtividade(atividade)
                                   }}
                                 >
-                                  <Pencil className="icon dropdown-item-icon" size={16} />
                                   Atualizar
                                 </a>
                                 <a
                                   href="#"
-                                  className="dropdown-item text-danger"
+                                  className="dropdown-item"
                                   onClick={(e) => {
                                     e.preventDefault()
                                     handleDeletarAtividade(atividade)
                                   }}
                                 >
-                                   <Trash2 className="icon dropdown-item-icon" size={16} />
                                   Deletar
                                 </a>
                               </div>
@@ -248,11 +250,11 @@ const DetalheEvento = () => {
                         <div className="d-flex justify-content-between align-items-center mt-2">
                           <div className="d-flex align-items-center gap-2">
                             <Users size={16} className="text-muted" />
-                            <small className="text-muted">{atividade.capacidadeMaxima} pessoas</small>
+                            <small className="text-muted">{atividade.maxCapacidade} pessoas</small>
                           </div>
                           <div className="d-flex align-items-center gap-2">
                             <AlarmClock size={16} className="text-muted" />
-                            <small className="text-muted">{atividade.duracao} minutos</small>
+                            <small className="text-muted">{atividade.minutosDuracao} minutos</small>
                           </div>
                         </div>
                       </div>
