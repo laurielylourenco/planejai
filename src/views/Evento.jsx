@@ -55,10 +55,6 @@ const Evento = () => {
       horaFim: formatTime(formData.horaFim),
     }
 
-    /*  const url = editingEvent
-       ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
-       : "http://localhost:4001/createEvent.php" */
-
     const url = editingEvent
       ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
       : "http://localhost:8080/evento"

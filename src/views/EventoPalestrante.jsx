@@ -9,14 +9,14 @@ const EventoPalestrante = () => {
 
     useEffect(() => {
 
-    
+
 
         const fetchEventosPalestrante = async () => {
 
             const eventoResponse = await fetch(`http://localhost:4001/getEventoPalestrante.php?id_palestrante=6`)
             const eventoData = await eventoResponse.json()
 
-            console.log('eventoData',eventoData)
+            console.log('eventoData', eventoData)
             setListaEventoP([eventoData])
         }
 
@@ -33,10 +33,10 @@ const EventoPalestrante = () => {
             <div className="col-12">
 
                 <h1>Evento</h1>
-                <p>Eventos que fui convidado</p>
+                <p>Lista de eventos</p>
 
 
-            <EventoListPalestrante listaEvento={listaEventoP}/>
+                <EventoListPalestrante listaEvento={listaEventoP} />
             </div>
         </div>
 

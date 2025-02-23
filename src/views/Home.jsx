@@ -77,9 +77,7 @@ const Home = () => {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
-                                {location.pathname === "/home" ? <h1 className="text-muted mt-1 mb-4">Bem-vindo, {userData?.nome}</h1> : ""}
-
-
+                                
                                 {/* Aqui você pode adicionar o conteúdo principal */}
                                 <div className="content-area">
 
