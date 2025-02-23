@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import { Clock, Users } from "lucide-react"
@@ -7,13 +5,13 @@ import { Clock, Users } from "lucide-react"
 const LineUp = () => {
   const { id } = useParams()
   const [atividades, setAtividades] = useState([])
+  const [participante, setParticipante] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [inscricoes, setInscricoes] = useState({})
+  const [inscricoes, setInscricoes] = useState([])
 
   const fetchAtividades = useCallback(async () => {
     try {
-  //    const atividadesResponse = await fetch(`http://localhost:4001/getAtividades.php?eventoId=${id}`)
       const atividadesResponse = await fetch(`http://localhost:8080/atividades`) // tem que ter filtro por evento
       if (!atividadesResponse.ok) {
         throw new Error("Erro ao buscar atividades")
@@ -31,37 +29,36 @@ const LineUp = () => {
 
   const fetchInscricoes = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:4001/getInscricoes.php?userId=1`) // Assumindo userId fixo para exemplo
+      const response = await fetch(`http://localhost:8080/inscricao/1`) // Assumindo userId fixo para exemplo
       if (!response.ok) throw new Error("Erro ao buscar inscrições")
       const data = await response.json()
-
-      // Transformar array de inscrições em objeto para fácil verificação
-      const inscricoesObj = {}
-      data.forEach((inscricao) => {
-        inscricoesObj[inscricao.id_atividade] = true
-      })
-      setInscricoes(inscricoesObj)
+      setInscricoes(data)
     } catch (error) {
       console.error("Erro ao buscar inscrições:", error)
     }
   }, [])
 
   useEffect(() => {
+    const storedData = localStorage.getItem("userData")
+
+    if (storedData) {
+      setParticipante(JSON.parse(storedData))
+    }
     fetchAtividades()
     fetchInscricoes()
   }, [fetchAtividades, fetchInscricoes])
 
   const handleInscrever = async (atividadeId) => {
     try {
-      const response = await fetch("http://localhost:4001/inscreverAtividade.php", {
+      const response = await fetch("http://localhost:8080/inscricao", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id_atividade: atividadeId,
-          atividade_id_evento: 1,
-          id_usuario: 1, // Assumindo userId fixo para exemplo
+          idAtividade: atividadeId,
+          atividade_id_evento: id,
+          idParticipante: 1, // Assumindo userId fixo para exemplo
         }),
       })
 
@@ -70,10 +67,17 @@ const LineUp = () => {
       }
 
       // Atualizar estado local
-      setInscricoes((prev) => ({
+
+
+
+      fetchInscricoes();
+         /* const newInscricao = await response.json()
+      setInscricoes((prev) => [...prev, newInscricao]) */
+     
+     /*  setInscricoes((prev) => ({
         ...prev,
         [atividadeId]: true,
-      }))
+      })) */
 
       alert("Inscrição realizada com sucesso!")
     } catch (error) {
@@ -84,28 +88,18 @@ const LineUp = () => {
 
   const handleCancelarInscricao = async (atividadeId) => {
     try {
-      const response = await fetch(`http://localhost:4001/cancelarInscricao.php`, {
+      const response = await fetch(`http://localhost:8080/inscricao/${1}/${atividadeId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id_atividade: atividadeId,
-          atividade_id_evento: 1,
-          id_usuario: 1, // Assumindo userId fixo para exemplo
-        }),
       })
 
       if (!response.ok) {
         throw new Error("Erro ao cancelar inscrição")
       }
 
-      // Atualizar estado local
-      setInscricoes((prev) => {
-        const newInscricoes = { ...prev }
-        delete newInscricoes[atividadeId]
-        return newInscricoes
-      })
+      fetchInscricoes();
 
       alert("Inscrição cancelada com sucesso!")
     } catch (error) {
@@ -135,7 +129,7 @@ const LineUp = () => {
 
   // Agrupar atividades por data
   const atividadesPorData = atividades.reduce((acc, atividade) => {
-    const data = atividade.data.split(" ")[0]
+    const data = atividade.data.split("T")[0]
     if (!acc[data]) {
       acc[data] = []
     }
@@ -166,7 +160,7 @@ const LineUp = () => {
   return (
     <div className="col-12">
       <div className="p-3">
-        <h2 className="mb-4">Programação do Evento {id}</h2>
+        <h2 className="mb-4">Programação do Evento</h2>
         <ul className="nav nav-tabs mb-3">
           <li className="nav-item">
             <a className="nav-link active" href="#">
@@ -187,9 +181,9 @@ const LineUp = () => {
                       <div className="d-flex justify-content-between">
                         <h5 className="mb-1">
                           <Clock className="icon me-2" size={16} />
-                          {formatarHora(atividade.data)} - {atividade.duracao} min
+                          {formatarHora(atividade.data)} - {atividade.minutosDuracao} min
                         </h5>
-                        <small className="text-primary">{atividade.tipo_atividade}</small>
+                        <small className="text-primary">{atividade.tipoAtividade}</small>
                       </div>
                       <p className="mb-1">{atividade.nome}</p>
                       <p className="mb-1 text-muted">{atividade.descricao}</p>
@@ -199,7 +193,7 @@ const LineUp = () => {
                       </div>
                     </div>
                     <div className="ms-3">
-                      {inscricoes[atividade.id] ? (
+                      {inscricoes.some((inscricao) => inscricao.atividade.id === atividade.id) ? (
                         <button
                           className="btn btn-outline-danger btn-sm"
                           onClick={() => handleCancelarInscricao(atividade.id)}
@@ -224,4 +218,3 @@ const LineUp = () => {
 }
 
 export default LineUp
-

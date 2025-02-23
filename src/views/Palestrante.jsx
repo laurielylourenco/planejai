@@ -174,7 +174,7 @@ const Palestrante = () => {
                                 Cancelar
                             </button>
                             <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit} data-bs-dismiss="modal">
-                                {editingEvent ? "Atualizar evento" : "Criar evento"}
+                                {editingEvent ? "Atualizar palestrante" : "Criar palestrante"}
                             </button>
                         </div>
                     </div>
