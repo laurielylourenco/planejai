@@ -4,22 +4,26 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
   const [formData, setFormData] = useState({
     nome: "",
     descricao: "",
-    capacidadeMaxima: "",
-    duracao: "",
+    maxCapacidade: "",
+    minutosDuracao: "",
     tipo_atividade: "",
     hora: "",
   })
 
   useEffect(() => {
     if (atividadeParaEditar) {
-      const [data, hora] = atividadeParaEditar.data.split(" ")
+      // const [data, hora] = atividadeParaEditar.data.split(" ")
+      const dataObj = new Date(atividadeParaEditar.data)
+      const hora = dataObj.toTimeString().slice(0, 5) // Pega apenas HH:mm
+
       setFormData({
         nome: atividadeParaEditar.nome,
         descricao: atividadeParaEditar.descricao,
-        capacidadeMaxima: atividadeParaEditar.capacidadeMaxima,
-        duracao: atividadeParaEditar.duracao,
+        maxCapacidade: atividadeParaEditar.maxCapacidade,
+        minutosDuracao: atividadeParaEditar.minutosDuracao,
         tipo_atividade: atividadeParaEditar.tipo_atividade,
-        hora: hora.substring(0, 5),
+        id: atividadeParaEditar.id,
+        hora: hora,
       })
     }
   }, [atividadeParaEditar])
@@ -34,21 +38,53 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
 
   const handleSubmit = async () => {
     try {
-      const dataCompleta = `${data}T${formData.hora}:00`
-      let res = formData
-      const dadosParaEnviar = {
-        ...formData,
-        data: dataCompleta,
-        eventoId: eventoId,
+
+      let dadosParaEnviar
+
+
+      if (atividadeParaEditar) {
+
+
+        const dataOriginal = new Date(atividadeParaEditar.data);
+        const [horas, minutos] = formData.hora.split(":");
+
+        const dataAjustada = new Date(
+          dataOriginal.getFullYear(),
+          dataOriginal.getMonth(),
+          dataOriginal.getDate(),
+          Number.parseInt(horas, 10),
+          Number.parseInt(minutos, 10)
+        );
+
+        const ano = dataAjustada.getFullYear();
+        const mes = String(dataAjustada.getMonth() + 1).padStart(2, "0"); // Mês começa do 0
+        const dia = String(dataAjustada.getDate()).padStart(2, "0");
+        const hora = String(dataAjustada.getHours()).padStart(2, "0");
+        const minuto = String(dataAjustada.getMinutes()).padStart(2, "0");
+        const segundo = "00";
+
+        let dataCompleta = `${ano}-${mes}-${dia}T${hora}:${minuto}:${segundo}`;
+
+        dadosParaEnviar = {
+          ...formData,
+          data: dataCompleta,
+          eventoId: eventoId,
+        };
+
+
+      } else {
+
+        dadosParaEnviar = {
+          ...formData,
+          data: `${data}T${formData.hora}:00`,
+          eventoId: eventoId
+        }
+
       }
 
 
-      const url = atividadeParaEditar
-        ? `http://localhost:4001/updateAtividade.php?id=${atividadeParaEditar.id}`
-        : "http://localhost:8080/atividade"
-
-      //
-      const method = atividadeParaEditar ? "PUT" : "POST"
+      const url = "http://localhost:8080/atividade"
+      const method = atividadeParaEditar ? "PATCH" : "POST"
 
       const response = await fetch(url, {
         method,
@@ -62,14 +98,13 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
         throw new Error(atividadeParaEditar ? "Erro ao atualizar atividade" : "Erro ao criar atividade")
       }
 
-     // const responseData = await response.json()
 
       // Limpar o formulário
       setFormData({
         nome: "",
         descricao: "",
-        capacidadeMaxima: "",
-        duracao: "",
+        maxCapacidade: "",
+        minutosDuracao: "",
         tipo_atividade: "",
         hora: "",
       })
@@ -136,8 +171,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
                   <input
                     type="number"
                     className="form-control"
-                    name="duracao"
-                    value={formData.duracao}
+                    name="minutosDuracao"
+                    value={formData.minutosDuracao}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -151,8 +186,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
                   <input
                     type="number"
                     className="form-control"
-                    name="capacidadeMaxima"
-                    value={formData.capacidadeMaxima}
+                    name="maxCapacidade"
+                    value={formData.maxCapacidade}
                     onChange={handleInputChange}
                   />
                 </div>

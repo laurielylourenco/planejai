@@ -53,6 +53,7 @@ const Login = () => {
 
                 })
                 .catch(err => {
+                    alert(err)
                     console.log(err)
                    // alert(err.message)  // Exibe o erro
                 })

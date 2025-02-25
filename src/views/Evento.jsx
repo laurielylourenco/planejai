@@ -8,9 +8,7 @@ const Evento = () => {
     nome: "",
     local: "",
     dataInicio: "",
-    horaInicio: "",
     dataFim: "",
-    horaFim: "",
     maxAtividades: "",
     descricao: "",
   })
@@ -50,9 +48,7 @@ const Evento = () => {
 
   const handleSubmit = () => {
     const formattedData = {
-      ...formData,
-      horaInicio: formatTime(formData.horaInicio),
-      horaFim: formatTime(formData.horaFim),
+      ...formData
     }
 
     const url = editingEvent
@@ -89,9 +85,8 @@ const Evento = () => {
       nome: event.nome,
       local: event.local,
       dataInicio: event.dataInicio,
-      horaInicio: event.horaInicio,
       dataFim: event.dataFim,
-      horaFim: event.horaFim,
+
       maxAtividades: event.maxAtividades || "",
       descricao: event.descricao || "",
     })
@@ -104,9 +99,7 @@ const Evento = () => {
       nome: "",
       local: "",
       dataInicio: "",
-      horaInicio: "",
       dataFim: "",
-      horaFim: "",
       maxAtividades: "",
       descricao: "",
     })
@@ -181,19 +174,6 @@ const Evento = () => {
                   </div>
 
                 </div>
-
-                <div className="col-6">
-                  <div className="mb-3">
-                    <label className="form-label">Hora início</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      name="horaInicio"
-                      value={formData.horaInicio}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
               </div>
 
 
@@ -207,19 +187,6 @@ const Evento = () => {
                       className="form-control"
                       name="dataFim"
                       value={formData.dataFim}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-6">
-
-                  <div className="mb-3">
-                    <label className="form-label">Hora fim</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      name="horaFim"
-                      value={formData.horaFim}
                       onChange={handleInputChange}
                     />
                   </div>

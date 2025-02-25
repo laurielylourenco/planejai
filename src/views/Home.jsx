@@ -55,9 +55,8 @@ const Home = () => {
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <Link to={"/home/perfil"} className='dropdown-item'>
-                                        Perfil
-                                    </Link>
+                                    {(userData.tipo_usuario == 'ORGANIZADOR' || userData.tipo_usuario == 'PALESTRANTE') ? <Link to={"/home/perfil"} className='dropdown-item'>Perfil</Link> : ""}
+
 
 
                                     <a href="#" className="dropdown-item" onClick={handleLogout}> Logout </a>
@@ -77,7 +76,7 @@ const Home = () => {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
-                                
+
                                 {/* Aqui você pode adicionar o conteúdo principal */}
                                 <div className="content-area">
 

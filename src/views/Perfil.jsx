@@ -9,6 +9,7 @@ const Perfil = () => {
   const [error, setError] = useState(null)
   const [successMessage, setSuccessMessage] = useState("")
   const [formData, setFormData] = useState({
+    role : "",
     nome: "",
     email: "",
     senha: "",
@@ -27,6 +28,7 @@ const Perfil = () => {
           email: userData.email || "",
           senha: "",
           confirmarSenha: "",
+          role : userData.tipo_usuario,
         }))
       } catch (error) {
         console.error("Erro ao parsear dados do localStorage:", error)
@@ -64,7 +66,9 @@ const Perfil = () => {
         senha: formData.senha || undefined, // Só envia a senha se foi preenchida
       }
 
-      const response = await fetch("http://localhost:8080/organizador", {
+      const url =  formData.role == "ORGANIZADOR" ? "http://localhost:8080/organizador" : "http://localhost:8080/palestrante"
+
+      const response = await fetch(url, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
