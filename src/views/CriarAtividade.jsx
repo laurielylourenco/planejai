@@ -77,6 +77,8 @@ const CriarAtividade = ({ eventoId, data, atividadeParaEditar, onAtividadeCriada
         dadosParaEnviar = {
           ...formData,
           data: `${data}T${formData.hora}:00`,
+          duracao: formData.minutosDuracao,
+          capacidadeMaxima: formData.maxCapacidade,
           eventoId: eventoId
         }
 
