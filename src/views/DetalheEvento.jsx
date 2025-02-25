@@ -238,17 +238,19 @@ const DetalheEvento = () => {
                                     handleEditarAtividade(atividade)
                                   }}
                                 >
-                                  Atualizar
+                                  <Pencil className="icon dropdown-item-icon" size={16} />
+                                  Editar
                                 </a>
                                 <a
                                   href="#"
-                                  className="dropdown-item"
+                                  className="dropdown-item text-danger"
                                   onClick={(e) => {
                                     e.preventDefault()
                                     handleDeletarAtividade(atividade)
                                   }}
                                 >
-                                  Deletar
+                                  <Trash2 className="icon dropdown-item-icon" size={16} />
+                                  Excluir
                                 </a>
                               </div>
                             </div>

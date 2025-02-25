@@ -50,9 +50,7 @@ const Palestrante = () => {
             ...formData
         }
 
-        const url = editingEvent
-            ? `http://localhost:4001/updateEvent.php?id=${editingEvent.id}`
-            : "http://localhost:8080/palestrante"
+        const url = "http://localhost:8080/palestrante"
 
         const options = {
             method: editingEvent ? "PUT" : "POST",

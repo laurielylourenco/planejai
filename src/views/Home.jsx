@@ -55,7 +55,7 @@ const Home = () => {
                                     </div>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    {userData.tipo_usuario == 'ORGANIZADOR' ? <Link to={"/home/perfil"} className='dropdown-item'>Perfil</Link> : ""}
+                                    {(userData.tipo_usuario == 'ORGANIZADOR' || userData.tipo_usuario == 'PALESTRANTE') ? <Link to={"/home/perfil"} className='dropdown-item'>Perfil</Link> : ""}
 
 
 
